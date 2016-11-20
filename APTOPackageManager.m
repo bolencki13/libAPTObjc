@@ -40,7 +40,9 @@
     /*
      * outputs installed packages to text file named 'installed' this will be stored at the cacheFile directory
      */
+#if !(TARGET_OS_SIMULATOR)
     system([[NSString stringWithFormat:@"dpkg-query --show > %@/installed",_manager.cacheFile] UTF8String]);
+#endif
     /* -------------------- */
     
     
@@ -64,7 +66,6 @@
     
     @autoreleasepool {
         [_sourceManager iterateThroughSources:^(APTOSource *source) {
-            NSLog(@"[libAPTObjc]: getting packages from source ~ %@",source.srcUrl);
             [packages addObjectsFromArray:[[self packagesForSource:source] allObjects]];
         }];
     }
@@ -74,13 +75,11 @@
 - (NSSet*)packagesForSource:(APTOSource*)source {
     NSMutableSet *packages = [NSMutableSet new];
     
-    APTOFileParser *reader = [[APTOFileParser alloc] initWithFilePath:[_manager.cacheFile stringByAppendingFormat:@"/lists/%@",[APTOPackageManager fileNameForURL:source.packageURL]] withBreak:@"\n\n"];
+    NSString *filePath = [_manager.cacheFile stringByAppendingFormat:@"/lists/%@",[APTOPackageManager fileNameForURL:source.packageURL]];
     
-    static NSInteger count;
-    [reader enumerateLinesUsingBlock:^(NSString * line, BOOL * stop) {
-        count++;
-        NSLog(@"[libAPTOjbc]: %ld",(long)count);
-        [self parseListWithPackageInfo:line callBack:^(NSDictionary *dict) {
+    APTOFileParser *reader = [[APTOFileParser alloc] initWithFilePath:filePath];
+    [reader enumeratePackageContentsUsingBlock:^(NSString *packageContents) {
+        [self parseListWithPackageInfo:packageContents callBack:^(NSDictionary *dict) {
             APTOPackage *package = [[APTOPackage alloc] initWithControlFile:dict];
             package.installed = [self isInstalled:package.pkgPackage];
             package.pkgSource = source;
@@ -178,7 +177,6 @@
     
     if (dependancies) {
         for (APTOPackage *_package in dependancies) {
-            NSLog(@"[APT-Objc]: %@",_package.pkgPackage);
         }
     }
     return output;

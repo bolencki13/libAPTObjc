@@ -18,6 +18,8 @@
 //  limitations under the License.
 //
 
+#import <Foundation/Foundation.h>
+
 // The domain for errors returned by the BZip library.
 extern NSString * const BZipErrorDomain;
 

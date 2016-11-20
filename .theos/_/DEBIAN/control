@@ -1,0 +1,10 @@
+Package: com.bolencki13.libAptObjc
+Name: libAptObjc
+Architecture: iphoneos-arm
+Description: Advanced package manager for debian (Obj-c)
+Maintainer: Brian Olencki
+Author: Brian Olencki
+Section: System
+Tag: role::developer
+Version: 0.0.1-94+debug
+Installed-Size: 332

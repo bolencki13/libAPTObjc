@@ -22,6 +22,7 @@
 @property (nonatomic, retain, readonly) NSString *srcComponents;
 @property (nonatomic, retain, readonly) NSString *srcDescription;
 - (instancetype)initWithReleaseFile:(NSString*)file atURL:(NSString*)url withManager:(APTOManager*)manager;
+
 @property (nonatomic, retain, readonly) NSString *packageURL;
 @property (nonatomic, retain, readonly) APTOManager *manager;
 @end

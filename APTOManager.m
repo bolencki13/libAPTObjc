@@ -9,9 +9,9 @@
 #import "APTOManager.h"
 
 @implementation APTOManager
-+ (APTOManager*)sharedManager {
++ (APTOManager*)sharedCydiaManager {
     static dispatch_once_t p = 0;
-    __strong static id _sharedObject = nil;
+    __strong static id _sharedLegacyObject = nil;
     dispatch_once(&p, ^{
         /*
          *
@@ -21,7 +21,15 @@
          * /var/mobile/Library/Caches/com.saurik.Cydia/sources.list
          *
          */
-        _sharedObject = [[self alloc] initWithSourceFileLocation:@"/etc/apt/sources.list.d/" cacheLocation:@"/var/lib/AptObjc/"];
+        _sharedLegacyObject = [[self alloc] initWithSourceFileLocation:@"/etc/apt/sources.list.d/" cacheLocation:@"/var/lib/AptObjc/"];
+    });
+    return _sharedLegacyObject;
+}
++ (APTOManager *)sharedManager {
+    static dispatch_once_t q = 0;
+    __strong static id _sharedObject = nil;
+    dispatch_once(&q, ^{
+        _sharedObject = [[self alloc] initWithSourceFileLocation:[NSString stringWithFormat:@"%@/sources.list.d/",[[NSBundle mainBundle] bundlePath]] cacheLocation:[NSString stringWithFormat:@"%@/AptObjc/",[[NSBundle mainBundle] bundlePath]]];
     });
     return _sharedObject;
 }
@@ -29,6 +37,9 @@
     if (self == [super init]) {
         _sourceFile = source;
         _cacheFile = cache;
+        
+        [self checkIfDirectoryExists:_sourceFile createIfNecessary:YES];
+        [self checkIfDirectoryExists:_cacheFile createIfNecessary:YES];
     }
     return self;
 }
@@ -43,6 +54,17 @@
     for (NSString *file in directory) {
         NSString *path = [NSString stringWithFormat:@"%@/icons/%@",self.cacheFile,file];
         [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+    }
+}
+- (BOOL)checkIfDirectoryExists:(NSString*)path createIfNecessary:(BOOL)create {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:nil]) {
+        if (create) {
+            return [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+        } else {
+            return NO;
+        }
+    } else {
+        return YES;
     }
 }
 @end

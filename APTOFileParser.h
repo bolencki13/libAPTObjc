@@ -8,17 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-@interface APTOFileParser : NSObject {
-    NSString * filePath;
-    
-    NSFileHandle * fileHandle;
-    unsigned long long currentOffset;
-    unsigned long long totalFileLength;    
-}
-@property (nonatomic, copy) NSString *lineDelimiter;
-@property (nonatomic) NSUInteger chunkSize;
-- (instancetype)initWithFilePath:(NSString *)aPath withBreak:(NSString*)aBreak;
-- (NSString *)readLine;
-- (NSString *)readTrimmedLine;
-- (void)enumerateLinesUsingBlock:(void(^)(NSString*, BOOL *))block;
+@interface APTOFileParser : NSObject
+@property (nonatomic, retain, readonly) NSString *filePath;
+- (instancetype)initWithFilePath:(NSString*)filePath;
+- (void)enumeratePackageContentsUsingBlock:(void(^)(NSString *packageContents))block;
 @end

@@ -1,0 +1,389 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		40F686311DE1CE67008C7797 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F686301DE1CE67008C7797 /* main.m */; };
+		40F686341DE1CE67008C7797 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F686331DE1CE67008C7797 /* AppDelegate.m */; };
+		40F686371DE1CE67008C7797 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F686361DE1CE67008C7797 /* ViewController.m */; };
+		40F6863A1DE1CE67008C7797 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 40F686381DE1CE67008C7797 /* Main.storyboard */; };
+		40F6863C1DE1CE67008C7797 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40F6863B1DE1CE67008C7797 /* Assets.xcassets */; };
+		40F6863F1DE1CE67008C7797 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 40F6863D1DE1CE67008C7797 /* LaunchScreen.storyboard */; };
+		40F686541DE1CEA6008C7797 /* APTOManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F6864A1DE1CEA6008C7797 /* APTOManager.m */; };
+		40F686551DE1CEA6008C7797 /* APTOPackage.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F6864C1DE1CEA6008C7797 /* APTOPackage.m */; };
+		40F686561DE1CEA6008C7797 /* APTOPackageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F6864E1DE1CEA6008C7797 /* APTOPackageManager.m */; };
+		40F686571DE1CEA6008C7797 /* APTOSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F686501DE1CEA6008C7797 /* APTOSource.m */; };
+		40F686581DE1CEA6008C7797 /* APTOSourceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F686521DE1CEA6008C7797 /* APTOSourceManager.m */; };
+		40F6865C1DE1CEBC008C7797 /* BZipCompression.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F6865B1DE1CEBC008C7797 /* BZipCompression.m */; };
+		40F6865F1DE1D0AD008C7797 /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 40F6865E1DE1D0AD008C7797 /* libbz2.tbd */; };
+		40F686621DE1D120008C7797 /* APTOFileParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 40F686611DE1D120008C7797 /* APTOFileParser.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		40F6862C1DE1CE67008C7797 /* libAPTObjc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = libAPTObjc.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		40F686301DE1CE67008C7797 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		40F686321DE1CE67008C7797 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		40F686331DE1CE67008C7797 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		40F686351DE1CE67008C7797 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		40F686361DE1CE67008C7797 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		40F686391DE1CE67008C7797 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		40F6863B1DE1CE67008C7797 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		40F6863E1DE1CE67008C7797 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		40F686401DE1CE67008C7797 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		40F686491DE1CEA6008C7797 /* APTOManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APTOManager.h; path = ../../APTOManager.h; sourceTree = "<group>"; };
+		40F6864A1DE1CEA6008C7797 /* APTOManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APTOManager.m; path = ../../APTOManager.m; sourceTree = "<group>"; };
+		40F6864B1DE1CEA6008C7797 /* APTOPackage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APTOPackage.h; path = ../../APTOPackage.h; sourceTree = "<group>"; };
+		40F6864C1DE1CEA6008C7797 /* APTOPackage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APTOPackage.m; path = ../../APTOPackage.m; sourceTree = "<group>"; };
+		40F6864D1DE1CEA6008C7797 /* APTOPackageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APTOPackageManager.h; path = ../../APTOPackageManager.h; sourceTree = "<group>"; };
+		40F6864E1DE1CEA6008C7797 /* APTOPackageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APTOPackageManager.m; path = ../../APTOPackageManager.m; sourceTree = "<group>"; };
+		40F6864F1DE1CEA6008C7797 /* APTOSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APTOSource.h; path = ../../APTOSource.h; sourceTree = "<group>"; };
+		40F686501DE1CEA6008C7797 /* APTOSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APTOSource.m; path = ../../APTOSource.m; sourceTree = "<group>"; };
+		40F686511DE1CEA6008C7797 /* APTOSourceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APTOSourceManager.h; path = ../../APTOSourceManager.h; sourceTree = "<group>"; };
+		40F686521DE1CEA6008C7797 /* APTOSourceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APTOSourceManager.m; path = ../../APTOSourceManager.m; sourceTree = "<group>"; };
+		40F6865A1DE1CEBC008C7797 /* BZipCompression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BZipCompression.h; path = ../../BZipCompression/BZipCompression.h; sourceTree = "<group>"; };
+		40F6865B1DE1CEBC008C7797 /* BZipCompression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BZipCompression.m; path = ../../BZipCompression/BZipCompression.m; sourceTree = "<group>"; };
+		40F6865E1DE1D0AD008C7797 /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		40F686601DE1D120008C7797 /* APTOFileParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = APTOFileParser.h; path = ../../APTOFileParser.h; sourceTree = "<group>"; };
+		40F686611DE1D120008C7797 /* APTOFileParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = APTOFileParser.m; path = ../../APTOFileParser.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		40F686291DE1CE67008C7797 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40F6865F1DE1D0AD008C7797 /* libbz2.tbd in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		40F686231DE1CE67008C7797 = {
+			isa = PBXGroup;
+			children = (
+				40F6862E1DE1CE67008C7797 /* libAPTObjc */,
+				40F6862D1DE1CE67008C7797 /* Products */,
+				40F6865D1DE1D0AC008C7797 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		40F6862D1DE1CE67008C7797 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				40F6862C1DE1CE67008C7797 /* libAPTObjc.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		40F6862E1DE1CE67008C7797 /* libAPTObjc */ = {
+			isa = PBXGroup;
+			children = (
+				40F686321DE1CE67008C7797 /* AppDelegate.h */,
+				40F686331DE1CE67008C7797 /* AppDelegate.m */,
+				40F686351DE1CE67008C7797 /* ViewController.h */,
+				40F686361DE1CE67008C7797 /* ViewController.m */,
+				40F686461DE1CE86008C7797 /* library */,
+				40F686381DE1CE67008C7797 /* Main.storyboard */,
+				40F6863B1DE1CE67008C7797 /* Assets.xcassets */,
+				40F6863D1DE1CE67008C7797 /* LaunchScreen.storyboard */,
+				40F686401DE1CE67008C7797 /* Info.plist */,
+				40F6862F1DE1CE67008C7797 /* Supporting Files */,
+			);
+			path = libAPTObjc;
+			sourceTree = "<group>";
+		};
+		40F6862F1DE1CE67008C7797 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				40F686301DE1CE67008C7797 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		40F686461DE1CE86008C7797 /* library */ = {
+			isa = PBXGroup;
+			children = (
+				40F686491DE1CEA6008C7797 /* APTOManager.h */,
+				40F6864A1DE1CEA6008C7797 /* APTOManager.m */,
+				40F6864B1DE1CEA6008C7797 /* APTOPackage.h */,
+				40F6864C1DE1CEA6008C7797 /* APTOPackage.m */,
+				40F6864D1DE1CEA6008C7797 /* APTOPackageManager.h */,
+				40F6864E1DE1CEA6008C7797 /* APTOPackageManager.m */,
+				40F6864F1DE1CEA6008C7797 /* APTOSource.h */,
+				40F686501DE1CEA6008C7797 /* APTOSource.m */,
+				40F686511DE1CEA6008C7797 /* APTOSourceManager.h */,
+				40F686521DE1CEA6008C7797 /* APTOSourceManager.m */,
+				40F686601DE1D120008C7797 /* APTOFileParser.h */,
+				40F686611DE1D120008C7797 /* APTOFileParser.m */,
+				40F686591DE1CEAA008C7797 /* BZip2 */,
+			);
+			name = library;
+			sourceTree = "<group>";
+		};
+		40F686591DE1CEAA008C7797 /* BZip2 */ = {
+			isa = PBXGroup;
+			children = (
+				40F6865A1DE1CEBC008C7797 /* BZipCompression.h */,
+				40F6865B1DE1CEBC008C7797 /* BZipCompression.m */,
+			);
+			name = BZip2;
+			sourceTree = "<group>";
+		};
+		40F6865D1DE1D0AC008C7797 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				40F6865E1DE1D0AD008C7797 /* libbz2.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		40F6862B1DE1CE67008C7797 /* libAPTObjc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 40F686431DE1CE67008C7797 /* Build configuration list for PBXNativeTarget "libAPTObjc" */;
+			buildPhases = (
+				40F686281DE1CE67008C7797 /* Sources */,
+				40F686291DE1CE67008C7797 /* Frameworks */,
+				40F6862A1DE1CE67008C7797 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = libAPTObjc;
+			productName = libAPTObjc;
+			productReference = 40F6862C1DE1CE67008C7797 /* libAPTObjc.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		40F686241DE1CE67008C7797 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = "Brian Olencki";
+				TargetAttributes = {
+					40F6862B1DE1CE67008C7797 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 9UKYMVL752;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 40F686271DE1CE67008C7797 /* Build configuration list for PBXProject "libAPTObjc" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 40F686231DE1CE67008C7797;
+			productRefGroup = 40F6862D1DE1CE67008C7797 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				40F6862B1DE1CE67008C7797 /* libAPTObjc */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		40F6862A1DE1CE67008C7797 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40F6863F1DE1CE67008C7797 /* LaunchScreen.storyboard in Resources */,
+				40F6863C1DE1CE67008C7797 /* Assets.xcassets in Resources */,
+				40F6863A1DE1CE67008C7797 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		40F686281DE1CE67008C7797 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40F686371DE1CE67008C7797 /* ViewController.m in Sources */,
+				40F686341DE1CE67008C7797 /* AppDelegate.m in Sources */,
+				40F686621DE1D120008C7797 /* APTOFileParser.m in Sources */,
+				40F6865C1DE1CEBC008C7797 /* BZipCompression.m in Sources */,
+				40F686311DE1CE67008C7797 /* main.m in Sources */,
+				40F686571DE1CEA6008C7797 /* APTOSource.m in Sources */,
+				40F686551DE1CEA6008C7797 /* APTOPackage.m in Sources */,
+				40F686581DE1CEA6008C7797 /* APTOSourceManager.m in Sources */,
+				40F686561DE1CEA6008C7797 /* APTOPackageManager.m in Sources */,
+				40F686541DE1CEA6008C7797 /* APTOManager.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		40F686381DE1CE67008C7797 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				40F686391DE1CE67008C7797 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		40F6863D1DE1CE67008C7797 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				40F6863E1DE1CE67008C7797 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		40F686411DE1CE67008C7797 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		40F686421DE1CE67008C7797 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		40F686441DE1CE67008C7797 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9UKYMVL752;
+				INFOPLIST_FILE = libAPTObjc/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bolencki13.libAPTObjc;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		40F686451DE1CE67008C7797 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 9UKYMVL752;
+				INFOPLIST_FILE = libAPTObjc/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bolencki13.libAPTObjc;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		40F686271DE1CE67008C7797 /* Build configuration list for PBXProject "libAPTObjc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40F686411DE1CE67008C7797 /* Debug */,
+				40F686421DE1CE67008C7797 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		40F686431DE1CE67008C7797 /* Build configuration list for PBXNativeTarget "libAPTObjc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40F686441DE1CE67008C7797 /* Debug */,
+				40F686451DE1CE67008C7797 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 40F686241DE1CE67008C7797 /* Project object */;
+}

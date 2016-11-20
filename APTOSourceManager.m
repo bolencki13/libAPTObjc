@@ -10,6 +10,10 @@
 #import "APTOManager.h"
 #import "APTOSource.h"
 
+@interface APTOManager (Internal)
+- (BOOL)checkIfDirectoryExists:(NSString*)path createIfNecessary:(BOOL)create;
+@end
+
 @implementation APTOSourceManager
 + (NSString*)cleanURL:(NSString*)url {
     NSRange range = [url rangeOfString:@"dists"];
@@ -164,7 +168,10 @@
     return [[NSFileManager defaultManager] createDirectoryAtPath:file withIntermediateDirectories:YES attributes:nil error:nil];
 }
 - (NSString*)contentsOfFile:(NSString*)file {
-    return [NSString stringWithContentsOfFile:file encoding:NSUTF8StringEncoding error:nil];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:file]) {
+        NSString *contents = [NSString stringWithContentsOfFile:file encoding:NSUTF8StringEncoding error:nil];
+        return (contents ? contents : @"");
+    } else return @"";
 }
 - (BOOL)downloadRelease:(NSString*)url {
     NSData *urlData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[url stringByAppendingString:@"/Release"]]];
@@ -172,8 +179,10 @@
     if (urlData) {
         if ([[[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding] containsString:@"<!DOCTYPE html PUBLIC"]) return NO;
         
-        NSString *filePath = [NSString stringWithFormat:@"%@/%@", [_manager.cacheFile stringByAppendingString:@"/lists"],[APTOSourceManager fileNameForURL:url]];
-        return [urlData writeToFile:filePath atomically:YES];
+        NSString *filePath = [[NSString stringWithFormat:@"%@/%@", [_manager.cacheFile stringByAppendingString:@"/lists"],[APTOSourceManager fileNameForURL:url]] stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
+        [_manager checkIfDirectoryExists:[filePath stringByDeletingLastPathComponent] createIfNecessary:YES];
+        
+        return [urlData writeToFile:filePath options:0 error:nil];
     }
     return NO;
 }

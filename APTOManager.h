@@ -11,6 +11,7 @@
 @interface APTOManager : NSObject
 @property (nonatomic, retain, readonly) NSString *sourceFile;
 @property (nonatomic, retain, readonly) NSString *cacheFile;
++ (APTOManager*)sharedCydiaManager; /* Will work with a legacy (or currently released) version of Cydia */
 + (APTOManager*)sharedManager;
 - (instancetype)initWithSourceFileLocation:(NSString*)source cacheLocation:(NSString*)cache;
 - (void)cleanCaches;
