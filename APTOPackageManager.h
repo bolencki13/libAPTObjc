@@ -22,6 +22,7 @@ typedef void (^PackageManagerCallBack)(NSString *line);
 - (NSArray*)installedPackages;
 - (BOOL)install:(APTOPackage*)package callBack:(PackageManagerCallBack)callBack;
 - (NSArray*)dependanciesForPackage:(APTOPackage*)package error:(NSError**)error;
+- (NSArray*)conflictsForPackage:(APTOPackage*)package error:(NSError**)error;
 
 @property (nonatomic, retain, readonly) APTOManager *manager;
 @property (nonatomic, retain, readonly) APTOSourceManager *sourceManager;
