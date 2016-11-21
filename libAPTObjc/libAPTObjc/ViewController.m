@@ -16,6 +16,10 @@
 
 @interface ViewController () {
     NSArray *aryItem;
+    
+    APTOManager *manager;
+    APTOSourceManager *sourceManager;
+    APTOPackageManager *packageManager;
 }
 @end
 
@@ -24,15 +28,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
-    APTOManager *manager = [APTOManager sharedManager];
-    APTOSourceManager *sourceManager = [[APTOSourceManager alloc] initWithManager:manager];
+    manager = [APTOManager sharedManager];
+    sourceManager = [[APTOSourceManager alloc] initWithManager:manager];
     
     [sourceManager addSource:@"http://repo.bolencki13.com/" toListLocation:[manager.sourceFile stringByAppendingString:@"/sources.list"]];
     [sourceManager updateSources];
     
 //    aryItem = [sourceManager sources]; /* Uncomment if you want to display sources */
     
-    APTOPackageManager *packageManager = [[APTOPackageManager alloc] initWithManager:manager withSourceManager:sourceManager];
+    packageManager = [[APTOPackageManager alloc] initWithManager:manager withSourceManager:sourceManager];
     [packageManager updatePackages];
 
     aryItem = [[packageManager packages] allObjects]; /* Uncommend if you want to display packages */
@@ -58,9 +62,39 @@
     }
     
     id object = [aryItem objectAtIndex:indexPath.row];
-    if ([object isKindOfClass:[APTOSource class]]) cell.textLabel.text = ((APTOSource*)object).srcLabel;
-    else if ([object isKindOfClass:[APTOPackage class]]) cell.textLabel.text = ((APTOPackage*)object).pkgName;
+    if ([object isKindOfClass:[APTOSource class]]) {
+        cell.textLabel.text = ((APTOSource*)object).srcLabel;
+        cell.detailTextLabel.text = ((APTOSource*)object).srcUrl;
+    } else if ([object isKindOfClass:[APTOPackage class]]) {
+        cell.textLabel.text = ((APTOPackage*)object).pkgName;
+        cell.detailTextLabel.text = ((APTOPackage*)object).pkgPackage;
+    }
     
     return cell;
+}
+
+#pragma mark - UITableViewDelegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    APTOPackage *package = [packageManager packageWithBundleIdentifier:[tableView cellForRowAtIndexPath:indexPath].detailTextLabel.text];
+    
+    NSError *error = nil;
+    NSArray *aryDependancies = [packageManager dependanciesForPackage:package error:&error];
+    
+    if (error) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"libAPTObjc" message:error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:nil]];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    
+    NSMutableArray *aryPackages = [NSMutableArray new];
+    for (APTOPackage *dependancy in aryDependancies) {
+        [aryPackages addObject:dependancy.pkgPackage];
+    }
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"libAPTObjc" message:[NSString stringWithFormat:@"%@",aryPackages] preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 @end

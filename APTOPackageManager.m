@@ -16,6 +16,8 @@
 
 #import "BZipCompression/BZipCompression.h"
 
+static NSString *APTOPackageManagerErrorDomain = @"com.apto.error";
+
 @implementation APTOPackageManager
 + (NSString*)fileNameForURL:(NSString*)url {
     NSString *output = url;
@@ -172,17 +174,22 @@
 - (BOOL)install:(APTOPackage*)package callBack:(PackageManagerCallBack)callBack {
     BOOL output = NO;
     
-    
-    NSArray *dependancies = [self dependanciesForPackage:package];
-    
-    if (dependancies) {
+    NSError *error = nil;
+    NSArray *dependancies = [self dependanciesForPackage:package error:&error];
+    if (error) {
+        if (callBack) callBack(error.localizedDescription);
+        return NO;
+    } else if (dependancies) {
         for (APTOPackage *_package in dependancies) {
+            NSLog(@"%@",_package.pkgName);
         }
     }
     return output;
 }
-- (NSArray*)dependanciesForPackage:(APTOPackage*)package {
+- (NSArray*)dependanciesForPackage:(APTOPackage*)package error:(NSError**)error {
     NSMutableArray *aryPackages = [NSMutableArray new];
+    
+    BOOL firmwareCheck = NO;
     
     for (NSString *item in package.pkgDepends) {
         NSString *bundleIdentifier = item;
@@ -190,37 +197,75 @@
         
         NSRange range = [item rangeOfString:@"("];
         if (range.location != NSNotFound) {
-            bundleIdentifier = [bundleIdentifier substringToIndex:range.location];
+            if ([[bundleIdentifier substringToIndex:range.location] isEqualToString:@""]) {
+                bundleIdentifier = [bundleIdentifier substringFromIndex:1];
+                bundleIdentifier = [bundleIdentifier substringToIndex:[bundleIdentifier length]-1];
+                range = [bundleIdentifier rangeOfString:@"("];
+            }
             version = [bundleIdentifier substringFromIndex:range.location];
             version = [version stringByReplacingOccurrencesOfString:@"(" withString:@""];
             version = [version stringByReplacingOccurrencesOfString:@")" withString:@""];
+            bundleIdentifier = [bundleIdentifier substringToIndex:range.location];
         }
         
-        APTOPackage *_package = [self packageWithBundleIdentifier:bundleIdentifier];
-        if (package) {
+        if ([bundleIdentifier isEqualToString:@"firmware"]) {
+            NSString *currentVersion = [NSString stringWithFormat:@"%li.%li.%li",(long)[[NSProcessInfo processInfo] operatingSystemVersion].majorVersion,(long)[[NSProcessInfo processInfo] operatingSystemVersion].minorVersion,(long)[[NSProcessInfo processInfo] operatingSystemVersion].patchVersion];
+            
             if ([version containsString:@">>"]) { /* greater than */
                 version = [version stringByReplacingOccurrencesOfString:@">>" withString:@""];
-                if ([self compareVersion:version toVersion:_package.pkgVersion] != NSOrderedAscending) break;
+                if ([self compareVersion:version toVersion:currentVersion] != NSOrderedAscending) break;
             } else if ([version containsString:@"<<"]) { /* less than */
                 version = [version stringByReplacingOccurrencesOfString:@"<<" withString:@""];
-                if ([self compareVersion:version toVersion:_package.pkgVersion] != NSOrderedDescending) break;
+                if ([self compareVersion:version toVersion:currentVersion] != NSOrderedDescending) break;
             } else if ([version containsString:@"<="]) { /* less than or equal to */
                 version = [version stringByReplacingOccurrencesOfString:@"<=" withString:@""];
-                if ([self compareVersion:version toVersion:_package.pkgVersion] == NSOrderedAscending) break;
+                if ([self compareVersion:version toVersion:currentVersion] == NSOrderedAscending) break;
             } else if ([version containsString:@">="]) { /* greater than or eaqual to */
                 version = [version stringByReplacingOccurrencesOfString:@">=" withString:@""];
-                if ([self compareVersion:version toVersion:_package.pkgVersion] == NSOrderedDescending) break;
+                if ([self compareVersion:version toVersion:currentVersion] == NSOrderedDescending) break;
             } else if ([version containsString:@"="]) { /* equal to */
                 version = [version stringByReplacingOccurrencesOfString:@"=" withString:@""];
-                if ([self compareVersion:version toVersion:package.pkgVersion] != NSOrderedSame) break;
+                if ([self compareVersion:version toVersion:currentVersion] != NSOrderedSame) break;
             }
+            firmwareCheck = YES;
         } else {
-            break;
+            APTOPackage *_package = [self packageWithBundleIdentifier:bundleIdentifier];
+            NSLog(@"Input: %@\nOutput: %@",bundleIdentifier, _package.pkgPackage);
+            
+            if (_package) {
+                if ([version containsString:@">>"]) { /* greater than */
+                    version = [version stringByReplacingOccurrencesOfString:@">>" withString:@""];
+                    if ([self compareVersion:version toVersion:_package.pkgVersion] != NSOrderedAscending) break;
+                } else if ([version containsString:@"<<"]) { /* less than */
+                    version = [version stringByReplacingOccurrencesOfString:@"<<" withString:@""];
+                    if ([self compareVersion:version toVersion:_package.pkgVersion] != NSOrderedDescending) break;
+                } else if ([version containsString:@"<="]) { /* less than or equal to */
+                    version = [version stringByReplacingOccurrencesOfString:@"<=" withString:@""];
+                    if ([self compareVersion:version toVersion:_package.pkgVersion] == NSOrderedAscending) break;
+                } else if ([version containsString:@">="]) { /* greater than or eaqual to */
+                    version = [version stringByReplacingOccurrencesOfString:@">=" withString:@""];
+                    if ([self compareVersion:version toVersion:_package.pkgVersion] == NSOrderedDescending) break;
+                } else if ([version containsString:@"="]) { /* equal to */
+                    version = [version stringByReplacingOccurrencesOfString:@"=" withString:@""];
+                    if ([self compareVersion:version toVersion:_package.pkgVersion] != NSOrderedSame) break;
+                }
+                [aryPackages addObject:_package];
+            } else {
+                break;
+            }
         }
-        [aryPackages addObject:package];
     }
     
-    if ([aryPackages count] < [package.pkgDepends count]) return nil;
+    if ([aryPackages count] < [package.pkgDepends count]-firmwareCheck) {
+        if (error) {
+            NSDictionary *userInfo = @{
+                                       NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Package dependancy (%@) was not found",[package.pkgDepends objectAtIndex:[aryPackages count]+firmwareCheck]],
+                                       NSLocalizedFailureReasonErrorKey: [NSString stringWithFormat:@"Dependancy not found for package %@.",package.pkgPackage],
+                                       NSLocalizedRecoverySuggestionErrorKey: @"A different source may be needed.",                                       };
+            *error = [NSError errorWithDomain:APTOPackageManagerErrorDomain code:-13 userInfo:userInfo];
+        }
+        return nil;
+    }
     return aryPackages;
 }
 
