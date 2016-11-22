@@ -105,6 +105,11 @@
     [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
 }
+- (void)downloadURLForPackage:(APTOPackage*)package {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"libAPTObjc" message:[NSString stringWithFormat:@"%@",package.pkgFileName] preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
+}
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -145,6 +150,9 @@
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Show Conflicts" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self conflictsForPackage:package];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Download URL" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self downloadURLForPackage:package];
     }]];
     [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];

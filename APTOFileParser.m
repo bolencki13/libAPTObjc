@@ -24,7 +24,7 @@
 - (void)enumeratePackageContentsUsingBlock:(void(^)(NSString *packageContents))block {
     @autoreleasepool {
         FILE *file = fopen([_filePath UTF8String], "r");
-        if (!file) return;
+        if (!file) return; /* XXX: File will ocasionally be NULL causeing a bad access crash. Something to due with the dispatch_async() in APTOPackageManager - updatePackages */
         
         int lineBuffer = 256;
         char buffer[lineBuffer];

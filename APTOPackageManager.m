@@ -11,10 +11,13 @@
 #import "APTOSourceManager.h"
 #import "APTOSource.h"
 #import "APTOManager.h"
-
 #import "APTOFileParser.h"
 
 #import "BZipCompression/BZipCompression.h"
+
+@interface APTOManager (Internal)
+- (BOOL)checkIfDirectoryExists:(NSString*)path createIfNecessary:(BOOL)create;
+@end
 
 static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
 
@@ -437,5 +440,17 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
     }
     
     return NSOrderedSame;
+}
+- (BOOL)downloadPackageDeb:(NSString*)url {
+    [_manager checkIfDirectoryExists:[_manager.cacheFile stringByAppendingString:@"/debs"] createIfNecessary:YES];
+    
+    NSData *urlData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+    
+    if (urlData) {
+        if ([[[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding] containsString:@"<!DOCTYPE html PUBLIC"]) return NO;
+        
+        return [urlData writeToFile:[NSString stringWithFormat:@"%@/debs/%@",_manager.cacheFile,[url lastPathComponent]] options:0 error:nil];
+    }
+    return NO;
 }
 @end
