@@ -28,6 +28,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addSource:)];
+    
     manager = [APTOManager sharedManager];
     sourceManager = [[APTOSourceManager alloc] initWithManager:manager];
     
@@ -44,6 +46,24 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - Actions
+- (void)addSource:(UIBarButtonItem*)sender {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"libAPTObjc" message:@"Add Source" preferredStyle:UIAlertControllerStyleAlert];
+    [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.placeholder = @"Source URL";
+        textField.text = @"https://";
+    }];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Add Source" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        [sourceManager addSource:alert.textFields[0].text toListLocation:[manager.sourceFile stringByAppendingString:@"/sources.list"]];
+        [sourceManager updateSources];
+        [packageManager updatePackages];
+        aryItem = [[packageManager packages] allObjects];
+        [self.tableView reloadData];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 #pragma mark - Other

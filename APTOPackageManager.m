@@ -16,7 +16,7 @@
 
 #import "BZipCompression/BZipCompression.h"
 
-static NSString *APTOPackageManagerErrorDomain = @"com.apto.error";
+static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
 
 @implementation APTOPackageManager
 + (NSString*)fileNameForURL:(NSString*)url {
@@ -206,6 +206,7 @@ static NSString *APTOPackageManagerErrorDomain = @"com.apto.error";
     BOOL firmwareCheck = NO;
     
     for (NSString *item in package.pkgConflicts) {
+        NSLog(@"%@",item);
         NSString *bundleIdentifier = item;
         NSString *version = nil;
         
@@ -270,10 +271,10 @@ static NSString *APTOPackageManagerErrorDomain = @"com.apto.error";
         }
     }
     
-    if ([aryPackages count] < [package.pkgDepends count]-firmwareCheck) {
+    if ([aryPackages count] < [package.pkgConflicts count]-firmwareCheck) {
         if (error) {
             NSDictionary *userInfo = @{
-                                       NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Package conflict (%@) was not found",[package.pkgDepends objectAtIndex:[aryPackages count]+firmwareCheck]],
+                                       NSLocalizedDescriptionKey: [NSString stringWithFormat:@"Package conflict (%@) was not found",[package.pkgConflicts objectAtIndex:[aryPackages count]+firmwareCheck]],
                                        NSLocalizedFailureReasonErrorKey: [NSString stringWithFormat:@"Conflict not found for package %@.",package.pkgPackage],
                                        NSLocalizedRecoverySuggestionErrorKey: @"Something seriously f*cked up",                                       };
             *error = [NSError errorWithDomain:APTOPackageManagerErrorDomain code:-13 userInfo:userInfo];

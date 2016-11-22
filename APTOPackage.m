@@ -40,12 +40,16 @@
             _pkgDepends = [[[control objectForKey:@"Depends"] stringByReplacingOccurrencesOfString:@" " withString:@""] componentsSeparatedByString:@","];
         } else if ([control objectForKey:@"depends"]) {
             _pkgDepends = [[[control objectForKey:@"depends"] stringByReplacingOccurrencesOfString:@" " withString:@""] componentsSeparatedByString:@","];
+        } else {
+            _pkgDepends = nil;
         }
         
         if ([control objectForKey:@"Conflicts"]) {
             _pkgConflicts = [[[control objectForKey:@"Conflicts"] stringByReplacingOccurrencesOfString:@" " withString:@""] componentsSeparatedByString:@","];
         } else if ([control objectForKey:@"conflicts"]) {
             _pkgConflicts = [[[control objectForKey:@"conflicts"] stringByReplacingOccurrencesOfString:@" " withString:@""] componentsSeparatedByString:@","];
+        } else {
+            _pkgConflicts = nil;
         }
     }
     return self;
