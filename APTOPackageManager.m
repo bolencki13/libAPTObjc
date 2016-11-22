@@ -47,18 +47,26 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
 #endif
     /* -------------------- */
     
+    __block NSInteger processes = [_sourceManager.sources count]-1;
+    for (APTOSource *source in _sourceManager.sources) {
+        dispatch_queue_t backgroundQueue1 = dispatch_queue_create([source.srcUrl UTF8String], 0);
+        dispatch_async(backgroundQueue1, ^{
+            BOOL success;
+            
+            NSRange range = NSMakeRange([source.packageURL length]-3, 3);
+            if ([[source.packageURL substringWithRange:range] isEqualToString:@"bz2"]) {
+                success = [self downloadSpecialPackage:source.packageURL];
+            } else {
+                success = [self downloadPackageList:source.packageURL];
+            }
+            if (output == YES) output = success;
+            processes--;
+        });
+    }
     
-    [_sourceManager iterateThroughSources:^(APTOSource *source) {
-        BOOL success;
-        
-        NSRange range = NSMakeRange([source.packageURL length]-3, 3);
-        if ([[source.packageURL substringWithRange:range] isEqualToString:@"bz2"]) {
-            success = [self downloadSpecialPackage:source.packageURL];
-        } else {
-            success = [self downloadPackage:source.packageURL];
-        }
-        if (output == YES) output = success;
-    }];
+    while (processes > 0) {
+        [NSThread sleepForTimeInterval:0];
+    }
     
     return output;
 }
@@ -188,15 +196,30 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
     
     if (dependancies) {
         for (APTOPackage *_package in dependancies) {
-            NSLog(@"%@",_package.pkgName);
+            [self install:_package callBack:^(NSString *line) {
+                if (callBack) callBack(line);
+            }];
         }
     }
     
     if (conflicts) {
         for (APTOPackage *_package in conflicts) {
-            NSLog(@"%@",_package.pkgName);
+            [self remove:_package callBack:^(NSString *line) {
+                if (callBack) callBack(line);
+            }];
         }
     }
+    
+    
+    
+//    XXX: Actually install package
+    
+    return output;
+}
+- (BOOL)remove:(APTOPackage*)package callBack:(PackageManagerCallBack)callBack {
+    BOOL output = NO;
+    
+//    XXX: Actually remove package
     
     return output;
 }
@@ -206,7 +229,6 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
     BOOL firmwareCheck = NO;
     
     for (NSString *item in package.pkgConflicts) {
-        NSLog(@"%@",item);
         NSString *bundleIdentifier = item;
         NSString *version = nil;
         
@@ -245,7 +267,6 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
             firmwareCheck = YES;
         } else {
             APTOPackage *_package = [self packageWithBundleIdentifier:bundleIdentifier];
-            NSLog(@"Input: %@\nOutput: %@",bundleIdentifier, _package.pkgPackage);
             
             if (_package) {
                 if ([version containsString:@">>"]) { /* greater than */
@@ -327,7 +348,6 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
             firmwareCheck = YES;
         } else {
             APTOPackage *_package = [self packageWithBundleIdentifier:bundleIdentifier];
-            NSLog(@"Input: %@\nOutput: %@",bundleIdentifier, _package.pkgPackage);
             
             if (_package) {
                 if ([version containsString:@">>"]) { /* greater than */
@@ -367,7 +387,7 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
 }
 
 #pragma mark - Other
-- (BOOL)downloadPackage:(NSString*)url {
+- (BOOL)downloadPackageList:(NSString*)url {
     NSData *urlData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
     
     if (urlData) {

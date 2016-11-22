@@ -21,6 +21,7 @@ typedef void (^PackageManagerCallBack)(NSString *line);
 - (APTOPackage*)packageWithBundleIdentifier:(NSString*)bundleIdentifer;
 - (NSArray*)installedPackages;
 - (BOOL)install:(APTOPackage*)package callBack:(PackageManagerCallBack)callBack;
+- (BOOL)remove:(APTOPackage*)package callBack:(PackageManagerCallBack)callBack;
 - (NSArray*)dependanciesForPackage:(APTOPackage*)package error:(NSError**)error;
 - (NSArray*)conflictsForPackage:(APTOPackage*)package error:(NSError**)error;
 

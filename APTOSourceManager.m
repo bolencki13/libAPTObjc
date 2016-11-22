@@ -107,33 +107,44 @@
     return [newFile writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:nil];
 }
 - (BOOL)updateSources {
-    BOOL output = YES;
-    
     NSArray *directory = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:_manager.sourceFile error:nil];
+    
+    __block NSInteger processes = [directory count]-1;
     for (NSString *file in directory) {
-        NSString *content = [self contentsOfFile:[NSString stringWithFormat:@"%@/%@",_manager.sourceFile,file]];
-        if (![content isEqualToString:@""] && content != nil) {
-            NSArray *aryList = [content componentsSeparatedByString:@"\n"];
-            
-            for (NSString *item in aryList) {
-                if ([item length] < 4 || ![[item substringWithRange:NSMakeRange(0,3)] isEqualToString:@"deb"]) continue;
+        dispatch_queue_t backgroundQueue1 = dispatch_queue_create([file UTF8String], 0);
+        dispatch_async(backgroundQueue1, ^{
+            NSString *content = [self contentsOfFile:[NSString stringWithFormat:@"%@/%@",_manager.sourceFile,file]];
+            if (![content isEqualToString:@""] && content != nil) {
+                NSArray *aryList = [content componentsSeparatedByString:@"\n"];
                 
-                NSString *url = [item substringWithRange:NSMakeRange(4, [item length]-4)];
-                url = [url stringByReplacingOccurrencesOfString:@" ./" withString:@""];
-                
-                NSRange original = [url rangeOfString:@" "];
-                if (NSNotFound != original.location) {
-                    url = [url stringByReplacingCharactersInRange:original withString:@"dists/"];
+                for (NSString *item in aryList) {
+                    dispatch_queue_t backgroundQueue2 = dispatch_queue_create([item UTF8String], 0);
+                    dispatch_async(backgroundQueue2, ^{
+                        if ([item length] < 4 || ![[item substringWithRange:NSMakeRange(0,3)] isEqualToString:@"deb"]) return;
+                        
+                        NSString *url = [item substringWithRange:NSMakeRange(4, [item length]-4)];
+                        url = [url stringByReplacingOccurrencesOfString:@" ./" withString:@""];
+                        
+                        NSRange original = [url rangeOfString:@" "];
+                        if (NSNotFound != original.location) {
+                            url = [url stringByReplacingCharactersInRange:original withString:@"dists/"];
+                        }
+                        url = [url stringByReplacingOccurrencesOfString:@" main" withString:@""];
+                        
+                        [self downloadRelease:url];
+                        [self downloadIcon:url];
+                    });
                 }
-                url = [url stringByReplacingOccurrencesOfString:@" main" withString:@""];
-                
-                [self downloadRelease:url];
-                [self downloadIcon:url];
             }
-        }
+            processes--;
+        });
     }
     
-    return output;
+    while (processes > 0) {
+        [NSThread sleepForTimeInterval:0];
+    }
+    
+    return YES;
 }
 - (NSString*)filePathForSource:(NSString*)url {
     NSString *_url;

@@ -1,4 +1,4 @@
-//
+
 //  APTOFileParser.m
 //  
 //
@@ -22,20 +22,23 @@
     return self;
 }
 - (void)enumeratePackageContentsUsingBlock:(void(^)(NSString *packageContents))block {
-    FILE *file = fopen([_filePath UTF8String], "r");
-    
-    int lineBuffer = 256;
-    char buffer[lineBuffer];
-    
-    NSString *packageContents = @"";
-    while (fgets(buffer, sizeof(char)*lineBuffer, file) != NULL){
-        NSString *line = [NSString stringWithUTF8String:buffer];
+    @autoreleasepool {
+        FILE *file = fopen([_filePath UTF8String], "r");
+        if (!file) return;
         
-        if ([line isEqualToString:@"\n"]) {
-            block(packageContents);
-            packageContents = @"";
-        } else {
-            packageContents = [packageContents stringByAppendingString:line];
+        int lineBuffer = 256;
+        char buffer[lineBuffer];
+        
+        NSString *packageContents = @"";
+        while (fgets(buffer, sizeof(char)*lineBuffer, file) != NULL){
+            NSString *line = [NSString stringWithUTF8String:buffer];
+            
+            if ([line isEqualToString:@"\n"]) {
+                block(packageContents);
+                packageContents = @"";
+            } else {
+                packageContents = [packageContents stringByAppendingString:line];
+            }
         }
     }
 }
