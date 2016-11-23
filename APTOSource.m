@@ -14,7 +14,8 @@
 
 @implementation APTOSource
 - (instancetype)initWithReleaseFile:(NSString*)file atURL:(NSString*)url withManager:(APTOManager*)manager  {
-    if (self == [super init]) {
+    self = [super init];
+    if (self) {
         _srcUrl = url;
         _manager = manager;
         [self parseFile:file];

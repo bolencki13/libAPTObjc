@@ -25,4 +25,5 @@
 @property (nonatomic, readonly) BOOL paid;
 @property (nonatomic, retain) NSString *price;
 @property (nonatomic, retain) APTOSource *pkgSource;
+@property (nonatomic, retain, readonly) NSString *downloadURL;
 @end

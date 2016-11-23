@@ -32,7 +32,8 @@
     return output;
 }
 - (instancetype)initWithManager:(APTOManager *)manager {
-    if (self == [super init]) {
+    self = [super init];
+    if (self) {
         _manager = manager;
     }
     return self;
@@ -190,7 +191,7 @@
     if (urlData) {
         if ([[[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding] containsString:@"<!DOCTYPE html PUBLIC"]) return NO;
         
-        NSString *filePath = [[NSString stringWithFormat:@"%@/%@", [_manager.cacheFile stringByAppendingString:@"/lists"],[APTOSourceManager fileNameForURL:url]] stringByReplacingOccurrencesOfString:@"//" withString:@"/"];
+        NSString *filePath = [NSString stringWithFormat:@"%@/%@", [_manager.cacheFile stringByAppendingString:@"/lists"],[APTOSourceManager fileNameForURL:url]];
         [_manager checkIfDirectoryExists:[filePath stringByDeletingLastPathComponent] createIfNecessary:YES];
         
         return [urlData writeToFile:filePath options:0 error:nil];

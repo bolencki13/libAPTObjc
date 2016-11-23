@@ -107,7 +107,7 @@
     [self presentViewController:alert animated:YES completion:nil];
 }
 - (void)downloadURLForPackage:(APTOPackage*)package {
-    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"libAPTObjc" message:[NSString stringWithFormat:@"%@",package.pkgFileName] preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"libAPTObjc" message:package.downloadURL preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"Okay" style:UIAlertActionStyleCancel handler:nil]];
     [self presentViewController:alert animated:YES completion:nil];
 }

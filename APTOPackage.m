@@ -11,7 +11,8 @@
 
 @implementation APTOPackage
 - (instancetype)initWithControlFile:(NSDictionary*)control {
-    if (self == [super init]) {
+    self = [super init];
+    if (self) {
         _pkgPackage = [control objectForKey:@"Package"];
         if (!_pkgPackage) _pkgPackage = [control objectForKey:@"package"];
         
@@ -31,8 +32,8 @@
         _pkgVersion = [control objectForKey:@"Version"];
         if (!_pkgVersion) _pkgVersion = [control objectForKey:@"version"];
             
-        _pkgFileName = [control objectForKey:@"FileName"];
-        if (!_pkgFileName) _pkgFileName = [control objectForKey:@"fileName"];
+        _pkgFileName = [control objectForKey:@"Filename"];
+        if (!_pkgFileName) _pkgFileName = [control objectForKey:@"filename"];
         
         if ([[control objectForKey:@"Tag"] containsString:@"cydia::commercial"]) _paid = YES;
         
@@ -53,5 +54,15 @@
         }
     }
     return self;
+}
+- (NSString*)downloadURL {
+    if (_pkgSource) {
+        if ([_pkgSource.packageURL containsString:@".bz2"]) {
+            return [NSString stringWithFormat:@"%@%@",[self.pkgSource.packageURL stringByReplacingOccurrencesOfString:@"/Packages.bz2" withString:@""],self.pkgFileName];
+        } else {
+            return [NSString stringWithFormat:@"%@%@",[self.pkgSource.packageURL stringByReplacingOccurrencesOfString:@"/Packages" withString:@""],self.pkgFileName];
+        }
+    }
+    return _pkgFileName;
 }
 @end

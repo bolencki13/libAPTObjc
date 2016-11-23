@@ -34,6 +34,7 @@
     return _sharedObject;
 }
 - (instancetype)initWithSourceFileLocation:(NSString*)source cacheLocation:(NSString*)cache {
+    self = [super init];
     if (self == [super init]) {
         _sourceFile = source;
         _cacheFile = cache;

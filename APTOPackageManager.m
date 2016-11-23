@@ -33,7 +33,8 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
     return output;
 }
 - (instancetype)initWithManager:(APTOManager*)manager withSourceManager:(APTOSourceManager*)sourceManager {
-    if (self == [super init]) {
+    self = [super init];
+    if (self) {
         _manager = manager;
         _sourceManager = sourceManager;
     }
@@ -45,9 +46,12 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
     /*
      * outputs installed packages to text file named 'installed' this will be stored at the cacheFile directory
      */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 #if !(TARGET_OS_SIMULATOR)
     system([[NSString stringWithFormat:@"dpkg-query --show > %@/installed",_manager.cacheFile] UTF8String]);
 #endif
+#pragma clang diagnostic pop
     /* -------------------- */
     
     __block NSInteger processes = [_sourceManager.sources count]-1;
@@ -183,6 +187,9 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
     return finalPackage;
 }
 - (BOOL)install:(APTOPackage*)package callBack:(PackageManagerCallBack)callBack {
+#if (TARGET_OS_SIMULATOR)
+    return NO;
+#endif
     BOOL output = NO;
     
     NSError *error = nil;
@@ -199,21 +206,29 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
     
     if (dependancies) {
         for (APTOPackage *_package in dependancies) {
-            [self install:_package callBack:^(NSString *line) {
+            if ([self install:_package callBack:^(NSString *line) {
                 if (callBack) callBack(line);
-            }];
+            }] == NO) return NO;
         }
     }
     
     if (conflicts) {
         for (APTOPackage *_package in conflicts) {
-            [self remove:_package callBack:^(NSString *line) {
+            if ([self remove:_package callBack:^(NSString *line) {
                 if (callBack) callBack(line);
-            }];
+            }] == NO) return NO;
         }
     }
     
-    
+    NSString *packageLocation = nil;
+    if ([self downloadPackageDeb:package.downloadURL storedLocation:&packageLocation]) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        system([[NSString stringWithFormat:@"dpkg -i %@",packageLocation] UTF8String]); /* Should figure out success code from dpkg and assign it to 'output' for success rather than always 'NO' */
+#pragma clang diagnostic pop
+    } else {
+        return NO;
+    }
     
 //    XXX: Actually install package
     
@@ -449,7 +464,8 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
     if (urlData) {
         if ([[[NSString alloc] initWithData:urlData encoding:NSUTF8StringEncoding] containsString:@"<!DOCTYPE html PUBLIC"]) return NO;
         
-        return [urlData writeToFile:[NSString stringWithFormat:@"%@/debs/%@",_manager.cacheFile,[url lastPathComponent]] options:0 error:nil];
+        *location = [NSString stringWithFormat:@"%@/debs/%@",_manager.cacheFile,[url lastPathComponent]];
+        return [urlData writeToFile:*location options:0 error:nil];
     }
     return NO;
 }
