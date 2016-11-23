@@ -237,7 +237,12 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
 - (BOOL)remove:(APTOPackage*)package callBack:(PackageManagerCallBack)callBack {
     BOOL output = NO;
     
-//    XXX: Actually remove package
+    if (package.pkgPackage) {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        system([[NSString stringWithFormat:@"dpkg -r %@",package.pkgPackage] UTF8String]); /* Should figure out success code from dpkg and assign it to 'output' for success rather than always 'NO' */
+#pragma clang diagnostic pop
+    }
     
     return output;
 }
