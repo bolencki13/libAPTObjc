@@ -441,7 +441,7 @@ static NSString *APTOPackageManagerErrorDomain = @"com.aptobjc.error";
     
     return NSOrderedSame;
 }
-- (BOOL)downloadPackageDeb:(NSString*)url {
+- (BOOL)downloadPackageDeb:(NSString*)url storedLocation:(NSString**)location {
     [_manager checkIfDirectoryExists:[_manager.cacheFile stringByAppendingString:@"/debs"] createIfNecessary:YES];
     
     NSData *urlData = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
