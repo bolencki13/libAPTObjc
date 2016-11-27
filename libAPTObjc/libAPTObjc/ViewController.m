@@ -31,6 +31,7 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addSource:)];
     
+    [APTOManager optimizedManager];
     manager = [APTOManager sharedManager];
     sourceManager = [[APTOSourceManager alloc] initWithManager:manager];
     

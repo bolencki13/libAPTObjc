@@ -9,6 +9,23 @@
 #import "APTOManager.h"
 
 @implementation APTOManager
++ (APTOManager*)optimizedManager {
+    static dispatch_once_t p = 0;
+    __strong static id _sharedOptimizedObject = nil;
+    dispatch_once(&p, ^{
+        if (DEBUG) {
+            NSString *path = [[[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] absoluteString] stringByReplacingOccurrencesOfString:@"file://" withString:@""];
+            _sharedOptimizedObject = [[self alloc] initWithSourceFileLocation:[NSString stringWithFormat:@"%@/etc/apt/sources.list.d/",path] cacheLocation:[NSString stringWithFormat:@"%@/var/lib/AptObjc/",path]];
+        } else {
+            if (TARGET_OS_SIMULATOR) {
+                _sharedOptimizedObject = [APTOManager sharedManager];
+            } else {
+                _sharedOptimizedObject = [APTOManager sharedCydiaManager];
+            }
+        }
+    });
+    return _sharedOptimizedObject;
+}
 + (APTOManager*)sharedCydiaManager {
     static dispatch_once_t p = 0;
     __strong static id _sharedLegacyObject = nil;
