@@ -31,8 +31,7 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addSource:)];
     
-    [APTOManager optimizedManager];
-    manager = [APTOManager sharedManager];
+    manager = [APTOManager optimizedManager];
     sourceManager = [[APTOSourceManager alloc] initWithManager:manager];
     
     [sourceManager addSource:@"http://repo.bolencki13.com/" toListLocation:[manager.sourceFile stringByAppendingString:@"/sources.list"]];

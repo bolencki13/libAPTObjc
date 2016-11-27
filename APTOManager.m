@@ -13,8 +13,8 @@
     static dispatch_once_t p = 0;
     __strong static id _sharedOptimizedObject = nil;
     dispatch_once(&p, ^{
-        if (DEBUG) {
-            NSString *path = [[[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] absoluteString] stringByReplacingOccurrencesOfString:@"file://" withString:@""];
+        NSString *path = [[[[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject] absoluteString] stringByReplacingOccurrencesOfString:@"file://" withString:@""];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%@/etc",path]]) {
             _sharedOptimizedObject = [[self alloc] initWithSourceFileLocation:[NSString stringWithFormat:@"%@/etc/apt/sources.list.d/",path] cacheLocation:[NSString stringWithFormat:@"%@/var/lib/AptObjc/",path]];
         } else {
             if (TARGET_OS_SIMULATOR) {
