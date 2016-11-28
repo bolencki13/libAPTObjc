@@ -17,7 +17,7 @@
         if ([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%@/etc",path]]) {
             _sharedOptimizedObject = [[self alloc] initWithSourceFileLocation:[NSString stringWithFormat:@"%@/etc/apt/sources.list.d/",path] cacheLocation:[NSString stringWithFormat:@"%@/var/lib/AptObjc/",path]];
         } else {
-            if (TARGET_OS_SIMULATOR) {
+            if ([[[[NSBundle mainBundle] appStoreReceiptURL] lastPathComponent] isEqualToString:@"sandboxReceipt"]) {
                 _sharedOptimizedObject = [APTOManager sharedManager];
             } else {
                 _sharedOptimizedObject = [APTOManager sharedCydiaManager];
